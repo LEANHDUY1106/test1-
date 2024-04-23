@@ -1,0 +1,11 @@
+<div id="notfound">
+    <div class="notfound">
+        <div class="notfound-404">
+            <h1>:(</h1>
+        </div>
+        <h2>403 - Access Denied</h2>
+        <p>Bạn không có quyền truy cập, vui lòng liên hệ admin.</p>
+        <button *ngIf="isShowButton" class="btn btn-outline-primary" (click)="goBack()">Go Back</button>
+        <a *ngIf="isShowButton" class="btn btn-outline-primary ml-3" [routerLink]="['/']">Go Home</a>
+    </div>
+</div>

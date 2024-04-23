@@ -1,0 +1,383 @@
+<form style="font-size: 14px !important;" [busy]="isLoading" [style.width]="isStateLeftMenu ? 'calc(100vw - 332px)' : 'calc(100vw - 127px)'">
+    <div [formGroup]="form">
+        <div [style]="{'margin-bottom' : !isUpdate ? '20px' : '0px'}">
+            <div class="d-flex justify-content-between">
+                <div [style]="{'width' : isCheckScreenTitle ? '65%' : '45%'}">
+                    <h5 *ngIf="!isUpdate"
+                        style="margin: 0; font-weight: 700 !important; height: 35px;">{{form.get('invoicenumber').value}}</h5>
+                        <div *ngIf="isUpdate" class="d-flex" style="width: 100%;">
+                            <h5 style="margin: 0; font-weight: 700 !important; width: 150px !important; padding: 10px 5px !important;">SỐ HÓA ĐƠN </h5>
+                            <input type="text" class="form-control" placeholder="Nhập tiêu đề ..." id="subject" maxlength="140"
+                                aria-describedby="subjectHelp" formControlName="invoicenumber" style="width: 100%;"
+                                [ngClass]="{'pm-check': submitted && fm.invoicenumber?.errors}">
+
+                        </div>
+
+                </div>
+                <div class="btn-summit d-flex">
+                    <button type="button" class="btn btn-primary" *ngIf="!isUpdate"
+                         style="font-size: 14px; height: 35px;" (click)="isUpdate = true"
+                        ><i class="fa-solid fa-pen"
+                            style="margin-right: 0.5rem !important;"></i>Chỉnh sửa</button>
+                    <button  type="button" class="btn btn-success" *ngIf="isUpdate" (click)="save()"
+                        style="font-size: 14px; height: 35px;"><i class="fa-sharp fa-solid fa-floppy-disk"
+                            style="margin-right: 0.5rem !important;"></i>Lưu</button>
+                    <button type="button" class="btn btn-danger"
+                    (click)="back()"
+                    style="margin-left: 10px; font-size: 14px; height: 35px;"
+                       ><i class="fa-sharp fa-solid fa-rotate-left"
+                            style="margin-right: 0.3rem !important;"></i>Quay
+                        lại</button>
+                </div>
+            </div>
+            <div class="d-flex" *ngIf="isUpdate" [style]="{'width' : isCheckScreenTitle ? '80%' : '65%'}">
+                <div style="width: 100px !important; padding: 10px 5px !important;"> </div>
+            <div style="width: 100%">
+                <small *ngIf="submitted && (fm.invoicenumber?.errors?.required)" class="p-error">
+                    Dữ liệu không được để trống!
+                </small>
+            </div>
+            </div>
+        </div>
+        <div style="overflow-y: auto; overflow-x: hidden; height: calc(100vh - 238px);">
+            <div *ngIf="!isUpdate" style="margin-bottom: 16px; padding: 5px;">
+                <span ngbDropdown>
+                    <button type="button" class="btn" id="dropdownBasic1" style="font-size: 14px; color: white;"
+                    [disabled]="isView"
+                         ngbDropdownToggle [style]="{'background-color' : selectedStatus?.id == 1 ? '#28A745' : '#212529'}">
+                        {{selectedStatus?.name}}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button style="font-size: 14px;" ngbDropdownItem *ngFor="let item of statusList"
+                        (click)="changeStatus(item)"
+                           >{{item.name}}</button>
+                    </div>
+                </span>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h5 style="font-weight: 700 !important;">CHI TIẾT</h5>
+                <div [ngClass]="{'detail-cl': isUpdate}">
+                    <div class="group-description" [style]="{'padding-left' : isUpdate? '0px' : '10px'}">
+                        <div class="form-row row">
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <div class="group-text">Vùng:</div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else Region">{{form.get('region').value}}</span>
+                                    <ng-template #Region>
+                                        <input type="text" class="form-control" placeholder="Nhập dữ liệu ..." maxlength="128"
+                                            [ngClass]="{'pm-check': submitted && fm.region?.errors}"
+                                            formControlName="region">
+                                        <small *ngIf="submitted && (fm.region?.errors?.required)" class="p-error">
+                                            Dữ liệu không được để trống!
+                                        </small>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <div class="group-text">Ngày phát hành:<span *ngIf="isUpdate" style="color: #dc3545;">*</span></div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else DateRelease">{{form.get('invoicedate').value | date: 'dd/MM/yyyy'}}</span>
+                                    <ng-template #DateRelease>
+                                        <p-calendar [style]="{'width': '100%'}" [showIcon]="true" dateFormat="dd/mm/yy"
+                                        class="custom-calendar" formControlName="invoicedate"
+                                        [ngClass]="{'pm-check': submitted && fm.invoicedate?.errors}"
+                                        showButtonBar="true" placeholder="Chọn ngày mong muốn hoàn thành"
+                                        appendTo="body">
+                                    </p-calendar>
+                                    <small *ngIf="submitted && (fm.invoicedate?.errors?.required)" class="p-error">
+                                        Dữ liệu không được để trống!
+                                    </small>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row">
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <div class="group-text">Chi nhánh:<span *ngIf="isUpdate" style="color: #dc3545;">*</span></div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else Branch">{{form.get('branch').value}}</span>
+                                    <ng-template #Branch>
+                                        <input type="text" class="form-control" placeholder="Nhập dữ liệu ..." maxlength="128"
+                                            [ngClass]="{'pm-check': submitted && fm.branch?.errors}"
+                                            formControlName="branch">
+                                        <small *ngIf="submitted && (fm.branch?.errors?.required)" class="p-error">
+                                            Dữ liệu không được để trống!
+                                        </small>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <span class="group-text">Loại dịch vụ:<span *ngIf="isUpdate"
+                                        style="color: #dc3545">*</span></span>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;"
+                                        *ngIf="!isUpdate else TypeService">{{form.get('servicename').value}}</span>
+                                    <ng-template #TypeService>
+                                        <input type="text" class="form-control" placeholder="Nhập dữ liệu ..." maxlength="128"
+                                            [ngClass]="{'pm-check': submitted && fm.servicename?.errors}"
+                                            formControlName="servicename">
+                                        <small *ngIf="submitted && (fm.servicename?.errors?.required)" class="p-error">
+                                            Dữ liệu không được để trống!
+                                        </small>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row">
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <div class="group-text">Số hợp đồng:<span *ngIf="isUpdate" style="color: #dc3545;">*</span></div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else ContractNumber">{{form.get('contractnumber').value}}</span>
+                                    <ng-template #ContractNumber>
+                                        <input type="text" class="form-control" placeholder="Nhập dữ liệu ..." maxlength="128"
+                                            [ngClass]="{'pm-check': submitted && fm.contractnumber?.errors}"
+                                            formControlName="contractnumber">
+                                        <small *ngIf="submitted && (fm.contractnumber?.errors?.required)" class="p-error">
+                                            Dữ liệu không được để trống!
+                                        </small>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <span class="group-text">Tổng tiền:</span>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;"
+                                        *ngIf="!isUpdate else TotalMoney">{{form.get('totalamount').value | currency: 'VND'}}</span>
+                                    <ng-template #TotalMoney>
+                                        <p-inputNumber placeholder="Nhập số tiền..."
+                                        inputId="currency-vi" styleClass="customInputNumber" formControlName="totalamount"
+                                         mode="currency" currency="VND" locale="en-VI"></p-inputNumber>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row">
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <div class="group-text">Tên khách hàng:<span *ngIf="isUpdate" style="color: #dc3545;">*</span></div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else Customername">{{form.get('customername').value}}</span>
+                                    <ng-template #Customername>
+                                        <input type="text" class="form-control" placeholder="Nhập dữ liệu ..." maxlength="128"
+                                            [ngClass]="{'pm-check': submitted && fm.customername?.errors}"
+                                            formControlName="customername">
+                                        <small *ngIf="submitted && (fm.customername?.errors?.required)" class="p-error">
+                                            Dữ liệu không được để trống!
+                                        </small>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <span class="group-text">Nợ còn lại:</span>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;"
+                                        *ngIf="!isUpdate else RemainingDebt">{{form.get('totaldebt').value | currency: 'VND'}}</span>
+                                    <ng-template #RemainingDebt>
+                                        <p-inputNumber  placeholder="Nhập số tiền..."
+                                        inputId="currency-vi" styleClass="customInputNumber" mode="currency" formControlName="totaldebt"
+                                        class="{{submitted && form.get('totalamount').value < form.get('totaldebt').value ? 'ng-invalid ng-dirty' : ''}}"
+                                        currency="VND" locale="en-VI"></p-inputNumber>
+                                    </ng-template>
+                                    <small *ngIf="submitted && form.get('totalamount').value < form.get('totaldebt').value" class="p-error">
+                                        Tiền nợ còn lại phải nhỏ hơn hoặc bằng Tổng tiền!
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row">
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <div class="group-text">Mã số thuế:<span *ngIf="isUpdate" style="color: #dc3545;">*</span></div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else TaxCode">{{form.get('taxcode').value}}</span>
+                                    <ng-template #TaxCode>
+                                        <input type="text" class="form-control" placeholder="Nhập dữ liệu ..." maxlength="128"
+                                            [ngClass]="{'pm-check': submitted && fm.taxcode?.errors}"
+                                            formControlName="taxcode">
+                                        <small *ngIf="submitted && (fm.taxcode?.errors?.required)" class="p-error">
+                                            Dữ liệu không được để trống!
+                                        </small>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <span class="group-text">Dự đoán thời gian tiền về:<span *ngIf="isUpdate" style="color: #dc3545;">*</span></span>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;"
+                                        *ngIf="!isUpdate else EstimatedTimeMoney">{{form.get('receiverestimatedate').value ? (form.get('receiverestimatedate').value | date: 'dd/MM/yyyy') : 'N/A'}}</span>
+                                        <ng-template #EstimatedTimeMoney>
+                                            <p-calendar [style]="{'width': '100%'}" [showIcon]="true" dateFormat="dd/mm/yy"
+                                            class="custom-calendar" formControlName="receiverestimatedate"
+                                            showButtonBar="true" placeholder="Chọn ngày mong muốn hoàn thành"
+                                            appendTo="body">
+                                        </p-calendar>
+                                        <small *ngIf="submitted && (fm.receiverestimatedate?.errors?.required)" class="p-error">
+                                            Dữ liệu không được để trống!
+                                        </small>
+                                        </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row">
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <div class="group-text">Phòng ban:</div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else Department">{{form.get('department').value}}</span>
+                                    <ng-template #Department>
+                                        <input type="text" class="form-control" placeholder="Nhập dữ liệu ..." maxlength="128"
+                                            [ngClass]="{'pm-check': submitted && fm.department?.errors}"
+                                            formControlName="department">
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <span class="group-text">Saler:</span>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;"
+                                        *ngIf="!isUpdate else Saler">{{form.get('saleaccount').value}}</span>
+                                        <ng-template #Saler>
+                                            <input type="text" class="form-control" placeholder="Nhập dữ liệu ..." maxlength="128"
+                                                [ngClass]="{'pm-check': submitted && fm.saleaccount?.errors}"
+                                                formControlName="saleaccount">
+                                        </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row">
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}" *ngIf="isUpdate else TypeInvoiceNumber">
+                                <div class="group-text">Trạng thái:</div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else Assigner">{{form.get('status').value}}</span>
+                                    <ng-template #Assigner>
+                                        <select class="custom-select" formControlName="status">
+                                        <option *ngFor="let item of statusList" [value]="item.id">{{item.name}}</option>
+                                    </select>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                <div class="group-text">Người tiếp nhận:</div>
+                                <div class="d-flex flex-column" style="width: 100%;">
+                                    <span style="line-height: 35px;" *ngIf="!isUpdate else Assigner">{{form.get('demaccount').value}}</span>
+                                    <ng-template #Assigner>
+                                        <ng-select [multiple]="false" class="custom-ng-select"
+                                            [loading]="assignLoading" [typeahead]="assignInput$" [disabled]="!isSubAdmin"
+                                            style="font-size: 14px; height: 35px;"
+                                            [placeholder]="'Tìm kiếm theo username...'"
+                                            [(ngModel)]="selectedAssigns" [ngModelOptions]="{standalone: true}"
+                                            (ngModelChange)="onAssignChange()">
+                                            <ng-option *ngFor="let item of availableAssigns" [value]="item">
+                                               <div>{{item.fullName}} ({{'<'+item.divisionCode + ' ' + item.areaCode + '>'}})</div>
+                                                <div class="email" style="color: grey;">{{item.email}}</div>
+                                            </ng-option>
+                                        </ng-select>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row">
+                            <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}" *ngIf="!isUpdate else TypeInvoiceNumber">
+                                
+                            </div>
+                            <ng-template #TypeInvoiceNumber>
+                                <div class=" d-flex item-group col-xl-6" [style]="{'padding' : !isUpdate ? '0px' : '10px'}">
+                                    <div class="group-text">Loại hóa đơn:</div>
+                                    <div class="d-flex flex-column" style="width: 100%;">
+                                        <span style="line-height: 35px;" *ngIf="!isUpdate else TypeInvoiceNumberInput">{{form.get('invoicetypename')?.value ? form.get('invoicetypename')?.value : 'NaN'}}</span>
+                                        <ng-template #TypeInvoiceNumberInput>
+                                            <select class="custom-select" formControlName="invoicetypename">
+                                            <option *ngFor="let item of typeInvoiceList" [value]="item.value">{{item.name}}</option>
+                                        </select>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--chỉnh sửa với hiển thị-->
+            <h5 style="font-weight: 700 !important; padding: 5px;" *ngIf="listDebtLog?.length > 0 || !isView">TÌNH TRẠNG HÓA ĐƠN</h5>
+            <div style="width: 100%; background-color: #fffbe5 ; padding: 24px; border-radius: 5px;" *ngIf="listDebtLog?.length > 0 || !isView">
+                <div style="margin-bottom: 20px;" [style.width]="!isCheckDiscussion ? '100%' : '70%'">
+
+                    <div  style="position: relative; padding-bottom: 10px;" [busy]="isLoadingLog">
+                        <div id="contentComment" class="content-discussion" style="max-height: 350px; overflow: auto;" #commentContainer>
+                            <div class="group-persion-comment" *ngFor="let item of listDebtLog; let i=index" style="position: relative;">
+                                <div id="story-log-label-{{i}}">
+                                    <span><span style="font-weight: bold;">{{item.createduser}}</span><i> [ {{item.crateat | date: 'dd/MM/yyyy'}}
+                                        {{item.crateat | date: 'hh:mm a'}} ]</i></span>
+                                        <p *ngIf="item.interacttype > 0" style="margin: 8px 0 0 0;">Hình thức tương tác: {{getInteretType(item.interacttype)}}</p>
+                                        <p id="content-comment" style="margin: 8px 0px; word-break: break-word;" [innerHTML]="getHTML(item.content)" >
+                                            </p>
+
+                                    <p *ngIf="item.fileInfos?.length > 0" [style]="{'margin-bottom': item.emailreceiver?.length ? '0px' : '16px'}"><i class="fa-regular fa-paperclip"
+                                            style="margin-right: 5px;"></i>
+                                    </p>
+                                    <p *ngIf="item.updateuser" style="margin: 0;">Chỉnh sửa lần cuối bởi: <span>{{item.updateuser}} <i>[ {{item.updateat | date: 'dd/MM/yyyy'}}
+                                        {{item.updateat | date: 'hh:mm a'}} ]</i></span></p>
+                                    <!-- <span *ngIf="isSubAdmin" class="edit-log" onkeydown="" title="Chỉnh sửa" (click)="openEditLog(i)"><i class="fas fa-pen" style="font-size: 20px;"></i></span> -->
+                                    <span *ngIf="isSubAdmin || isAssigner" class="edit-log" onkeydown="">
+                                       <button class="btn btn-secondary" (click)="openEditLog(i)"><i class="fas fa-pencil-alt"></i></button>
+                                       <button class="btn btn-secondary" (click)="deleteEditLog(item)" style="margin-left: 8px;"><i class="fas fa-trash-alt"></i></button>
+                                    </span>
+                                </div>
+                                <div id="story-log-active-{{i}}" class="display-none">
+                                    <span><span style="font-weight: bold;">{{item.createduser}}</span><i> [ {{item.crateat | date: 'dd/MM/yyyy'}}
+                                        {{item.crateat | date: 'hh:mm a'}} ]</i></span>
+                                    <select class="custom-select" [(ngModel)]="item.interacttype" style="margin-bottom: 8px;" [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let item of listInteractValue" [value]="item.id">{{item.name}}</option>
+                        </select>
+                        <textarea id="editor"
+                        [ngModelOptions]="{standalone: true}"
+                        style="width: 100%; min-height: 100px; margin-top: 5px;"
+                        [(ngModel)]="item.content"
+                        [ngClass]="{'pm-check': !item.content}"
+                        ></textarea>
+                        <small *ngIf="!item.content" class="p-error">
+                            Dữ liệu không được để trống!
+                        </small>
+                        <div class="d-flex justify-content-end" style="margin: 8px 0;">
+                            <button class="btn btn-danger" style="margin-right: 6px;" (click)="closeEditLog(i)">Hủy</button>
+                            <button class="btn btn-success" (click)="editLog(item, i)">Lưu</button>
+                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [formGroup]="formLogHistory" *ngIf="!isView" >
+                        <div style="margin-bottom: 10px;">
+                            <span style="font-weight: bold;">Hình thức tương tác:</span>
+                            <div style="width: 250px;">
+                                <select class="custom-select" formControlName="interacttype" style="font-size: 14px; height: 35px;">
+                            <option *ngFor="let item of listInteractValue" [value]="item.id">{{item.name}}</option>
+                        </select>
+                            </div>
+                        </div>
+                        <div>
+                            <span style="font-weight: bold;">Nội dung:</span>
+                            <textarea id="editor"  placeholder="Nhập nội dung..."
+                        style="width: 100%; min-height: 100px; margin-top: 5px;"
+                        formControlName="content"
+                        [ngClass]="{'pm-check': logSummit && fl.content?.errors}"
+                        ></textarea>
+                        </div>
+                            <small *ngIf="logSummit && fl.content?.errors?.required" class="p-error">
+                                Dữ liệu không được để trống!
+                            </small>
+                            <small *ngIf="logSummit && fl.content?.errors?.maxlength" class="p-error">
+                                Dữ liệu không được vượt quá 4000 ký tự!
+                            </small>
+                        <div class="send-mail d-flex justify-content-between" style="line-height: 35px; margin-top: 10px; margin-bottom: 8px;">
+                            <div class="d-flex">
+                                <button (click)="DownloadTemplate()" type="button" class="btn btn-primary" style="font-size: 14px; height: 35px !important; margin: 0 8px;"><i class="fas fa-file-download" style="margin-right: 6px;"></i> Download Template</button>
+                                <input id="uploadFileExcelTemplate" hidden type="file" (change)="changeFile($event)" accept=".xlsx" />
+                            <label for="uploadFileExcelTemplate" type="button" class="btn btn-success" style="font-size: 14px; height: 35px !important;"><i class="fas fa-file-upload" style="margin-right: 6px;"></i> Import</label>
+                            </div>
+                            <button (click)="saveLog()" [disabled]="isAddLog" type="button" class="btn btn-success" style="font-size: 14px; height: 35px !important;">Ghi lịch sử</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

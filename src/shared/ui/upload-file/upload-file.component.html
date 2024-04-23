@@ -1,0 +1,20 @@
+
+<div style="max-width: 600px;">
+    <!-- <div *ngIf="invalidFile" style="color: #DC3545; padding: 10px 0;">{{messageErr}}</div> -->
+    <div class="d-flex">
+        <input id="uploadFile" type="file" multiple hidden (change)="changeFile($event)" [disabled]="files.length == 5" />
+        <label [style]="{'color' : files.length == 5 ? '#7397bd':''}" class="btn-choose-file" style="display: block; width: 240px;" for="uploadFile">Chọn files <i class="fa-solid fa-paperclip"></i></label>
+        <span style="margin-left: 10px;"> (Chọn tối đa 5 files, tổng dung lượng các file không quá 20MB và chỉ hỗ trợ các tệp có đuôi xlsx, .docx, .pptx, .pdf, .jpg)</span> 
+    </div>
+    <div style="margin-top: 10px;">
+        <div *ngFor="let item of files" class="d-flex justify-content-between"
+            style="border-top: 1px dotted #212925; padding: 10px; line-height: 31px;">
+            <div class="d-flex">
+                <i class="fa-solid fa-paperclip" style="font-size: 20px; padding: 5px 0; margin-right: 10px;"></i>
+                <p style="margin: 0; overflow-wrap: anywhere;">{{item.name}}</p>
+            </div>
+            <i class="fa-solid fa-xmark" style="padding: 10px; cursor: pointer;" (click)="removeFile(item)"
+                onkeydown=""></i>
+        </div>
+    </div>
+</div>

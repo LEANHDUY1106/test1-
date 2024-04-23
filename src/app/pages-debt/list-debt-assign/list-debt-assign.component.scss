@@ -1,0 +1,71 @@
+.content-list-request{
+    div {
+        h5{
+            margin-bottom: 0px;
+            line-height: 35px;
+        }
+        .btn-angile{
+            padding: 6px 12px;
+            border-bottom: 2px solid var(--ftms-body-background);
+            cursor: pointer;
+            &:hover{
+                color: var(--color-blu);
+            }
+        }
+        button {
+            font-size: 14px !important;
+            &:focus{
+                outline: none;
+                box-shadow: none;
+            }
+        }
+        .filter{
+            border: 1px solid #212529;
+        }
+    }
+    
+    .card {
+        .card-body {
+            .has-search .form-control {
+                padding-left: 2.375rem;
+            }
+            
+            .has-search .form-control-feedback {
+                position: absolute;
+                z-index: 2;
+                display: block;
+                width: 2.375rem;
+                height: 2.375rem;
+                line-height: 2.375rem;
+                text-align: center;
+                pointer-events: none;
+                color: #aaa;
+                .form-control {
+                    &:focus {
+                        outline: none !important;
+                        box-shadow: none !important;
+                        border-color: none;
+                    }
+                }
+            }
+        }
+    }
+    //table
+
+    &:active::-webkit-scrollbar-thumb,
+    &:focus::-webkit-scrollbar-thumb,
+    &:hover::-webkit-scrollbar-thumb {
+        visibility: visible;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        visibility: hidden;
+    }
+}
+
+.active-angile{
+    color: var(--color-blu);
+    border-color: var(--color-blu) !important;
+    font-weight: 600;
+}
+

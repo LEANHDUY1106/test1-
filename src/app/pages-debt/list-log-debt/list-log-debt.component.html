@@ -1,0 +1,89 @@
+<div style="position: relative;" [busy]="isLoading">
+
+    <div class="mb-2">
+
+        <div class="form-row" style="width: 100%; margin: 0;">
+            <div class="form-group d-flex justify-content-between" style="width:100% ;">
+                <div class="d-flex" style="width: 40%; height: 35px;">
+                    <input class="form-control" type="text" [(ngModel)]="requestLog.invoicenumber"
+                        (keydown.enter)="getListDebtLog()" placeholder="Nhập mã hóa đơn cần tìm"
+                        style="height: 35px; font-size: 14px;" pInputText Mo>
+                    <button style="height: 35px; min-width: 120px; margin-left: 8px; font-size: 14px;" type="button"
+                        class="btn btn-primary" (click)="getListDebtLog()"><i class="far fa-search"></i><span> Tìm
+                            kiếm</span></button>
+                </div>
+
+                <div class="">
+                    <button (click)="DownloadTemplate()" type="button" class="btn btn-primary"
+                        style="font-size: 14px; height: 35px !important; margin: 0 8px;"><i class="fas fa-file-download"
+                            style="margin-right: 6px;"></i> Download Template</button>
+                    <input id="uploadFileExcel" hidden type="file" accept=".xlsx" (change)="changeFile($event)" />
+                    <label for="uploadFileExcel" class="btn btn-success"
+                        style="margin: 0; margin-right: 10px; height: 35px; font-size: 14px;"><i
+                            class="fas fa-file-import"></i> Import</label>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Data table -->
+    <div class="card" style="border: none;">
+        <div class="card-body" style="overflow: auto; height: calc(100vh - 295px); padding: 0px;"
+            [style.width]="isStateLeftMenu ? 'calc(100vw - 334px)' : 'calc(100vw - 132px)'">
+            <table class="table" style="min-width: 1200px;">
+                <thead>
+                    <tr>
+                        <th id="Action" style="width: 100px;">Thao tác</th>
+                        <th id="opportunityCode" style="width: 200px;">
+                            Mã hóa đơn
+                        </th>
+                        <th id="brandname" style="width: 250px;">
+                            Hình thức tương tác
+                        </th>
+                        <th id="brandname" style="text-align: center; word-break: break-work;" width="600px">
+                            Nội dung
+                        </th>
+                        <th id="brandname" style="width: 150px;">
+                            Ngày tạo
+                        </th>
+                        <th id="brandname" style="width: 150px;">
+                            Người tạo
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listDebtLog">
+                        <td style="width: 100px;">
+                            <button class=" p-button-sm  p-button-text" type="button" pButton pRipple iconPos="center"
+                                icon="pi pi-ellipsis-v" (click)="generateMenu(item);menu.toggle($event);">
+                            </button>
+                            <p-menu #menu appendTo="body" [popup]="true" [model]="menuItems"></p-menu>
+                        </td>
+                        <td>{{item.invoicenumber}}</td>
+                        <td>{{item.interacttype == 1 ?"gọi điện": item.interacttype == 2 ? "gửi mail" :
+                            item.interacttype == 3 ?"đi gặp khách hàng" : item.interacttype == 4 ?"gửi công văn" :
+                            item.interacttype == 5 ?"gửi tin nhắc cước" : 'N/A'}}</td>
+                        <td [innerHTML]="getHTML(item.content)"></td>
+                        <td>{{item.crateat | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{item.createduser}}</td>
+                    </tr>
+                    <tr *ngIf="listDebtLog?.length == 0 || listDebtLog == null"
+                        style="color: #dc3545; text-align: center; width: 100%; position: absolute; padding: 10px;">
+                        Không có dữ liệu!
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <app-pagination (onPageChange)="paginate($event)" [totalCount]="totalCount" [isLoading]="isLoading"
+            [currentPage]="currentPage">
+        </app-pagination>
+    </div>
+    <!-- End Data table -->
+
+</div>
+
+<p-dialog [(visible)]="isShowUpdateConfigDialog" header="{{debtLogDetail?.invoicenumber}}" [modal]="true"
+     >
+    <app-update-log-dialog [logDetail]="debtLogDetail" (finished)="finishedToRefesh($event)">
+    </app-update-log-dialog>
+</p-dialog>

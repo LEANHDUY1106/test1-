@@ -1,0 +1,26 @@
+<form id="formUpdateConfig" [formGroup]="updateConfigDialog">
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <label for="name" class="col-form-label">Name</label>
+            <input class="form-control" placeholder="Nhập kịch bản chi tiết" formControlName="name" disabled="true"
+             pInputTextarea type="text" [ngClass]="isSubmitted && 'mes-check'" id="name">
+            <small *ngIf="isSubmitted 
+            && getUpdateConfig.name.errors
+            && getUpdateConfig.name.errors.required" class="p-error">
+                Dữ liệu không được để trống!
+            </small>
+        </div>
+        <div class="col-sm-12">
+            <label for="content" class="col-form-label required">Value</label>
+            <textarea class="form-control" formControlName="value" placeholder="Nhập value" pInputTextarea type="text"
+                [rows]="5" [cols]="30" [ngClass]="{'pm-check': isSubmitted && getUpdateConfig.value.errors}" id="value"></textarea>
+            <small *ngIf="isSubmitted
+                && getUpdateConfig.value.errors
+                && getUpdateConfig.value.errors.required" class="p-error">
+                Dữ liệu không được để trống!
+            </small>
+        </div>
+
+    </div>
+
+</form>

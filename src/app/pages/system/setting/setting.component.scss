@@ -1,0 +1,15 @@
+.card {
+    .card-body {
+        table {
+            thead {
+                th {
+                    border-top: none !important;
+                    position: sticky;
+                    top: 0;
+                    background-color: white;
+                    z-index: 10;
+                }
+            }
+        }
+    }
+}

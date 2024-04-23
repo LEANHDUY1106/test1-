@@ -1,0 +1,16 @@
+<form id="formUpdateConfig" [formGroup]="reasionConfigDialog">
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <textarea class="form-control" formControlName="value" placeholder="Nhập lí do từ chối..." pInputTextarea
+                type="text" maxlength="512" [rows]="5" [cols]="30"
+                [ngClass]="{'pm-check': isSubmitted && getReasion.value.errors}" id="value"></textarea>
+            <small *ngIf="isSubmitted
+                && getReasion.value.errors
+                && getReasion.value.errors.required" class="p-error">
+                Dữ liệu không được để trống!
+            </small>
+        </div>
+
+    </div>
+
+</form>

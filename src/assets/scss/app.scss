@@ -1,0 +1,40 @@
+/*
+Template Name: Nazox - Responsive Bootstrap 4 Admin Dashboard
+Author: Themesdesign
+Contact: themesdesign.in@gmail.com
+File: Main Css File
+*/
+@import "~bootstrap/dist/css/bootstrap.css";
+//Fonts
+@import "custom/fonts/fonts";
+
+//Core files
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins.scss";
+
+// Structure
+
+// Components
+//icon
+@import "../../../node_modules/@fortawesome/fontawesome-free/css/fontawesome.css";
+@import "../../../node_modules/@fortawesome/fontawesome-free/css/brands.css";
+@import "../../../node_modules/@fortawesome/fontawesome-free/css/solid.css";
+
+
+// Pages
+@import "custom/pages/authentication";
+@import "custom/pages/email";
+@import "custom/pages/kanbanboard";
+@import "custom/pages/timeline";
+@import "custom/pages/extras-pages";
+@import "custom/pages/errorPage";
+//layout
+@import "custom/layout/ftms-variable.scss";
+@import "custom/layout/ftms-content.scss";
+@import "custom/layout/ftms-footer.scss";
+@import "custom/layout/ftms-header-sidebar.scss";
+@import "custom/layout/ftms-header.scss";
+@import "custom/layout/ftms-sidebar.scss";
+
+@import "~@ng-select/ng-select/themes/default.theme.css";

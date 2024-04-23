@@ -1,0 +1,71 @@
+<div style="position: relative;" [busy]="isLoading">
+    <!-- <app-pagetitle title="Cấu hình" [breadcrumbItems]="breadCrumbItems"></app-pagetitle> -->
+
+    <!-- Tìm kiếm -->
+    <!-- <div class="mb-2">
+        <p-fieldset legend="Tìm kiếm" [toggleable]="true">
+            <form [formGroup]="searchForm">
+                <div class="form-row">
+                    <div class="form-group col-lg-4">
+                        <label class="col-form-label" for="OpportinityCodes">Từ khóa tìm kiếm</label>
+                        <input class="form-control" type="text" placeholder="Nhập name hoặc value cần tìm"
+                            formControlName="keyword" pInputText>
+                    </div>
+                </div>
+                <p-divider></p-divider>
+                <div class="my-3">
+                    <button pButton pRipple type="button" label="Tìm kiếm"
+                        class="p-button-raised mr-2 p-button-sm" (click)="onSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+
+        </p-fieldset>
+    </div> -->
+    <!-- End tìm kiếm -->
+
+    <!-- Data table -->
+    <div class="card" style="border: none;">
+        <div class="card-body" style="overflow: auto; height: calc(100vh - 175px); padding: 0px;" [style.width]="isStateLeftMenu ? 'calc(100vw - 334px)' : 'calc(100vw - 132px)'">
+            <table class="table" style="min-width: 1200px;">
+                <thead>
+                    <tr>
+                        <th id="Action" style="width: 100px;">Thao tác</th>
+                        <th id="opportunityCode" style="width:250px">
+                            Name
+                        </th>
+                        <th id="brandname" style="text-align: center;" style="width:600px">
+                            Value
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listConfig">
+                        <td style="width: 100px;">
+                            <button class=" p-button-sm  p-button-text" type="button" pButton pRipple iconPos="center"
+                                icon="pi pi-ellipsis-v" (click)="generateMenu(item);menu.toggle($event);">
+                            </button>
+                            <p-menu #menu appendTo="body" [popup]="true" [model]="menuItems"></p-menu>
+                        </td>
+                        <td style="width:250px">{{item.name}}</td>
+                        <td style="width:600px">{{item.value}}</td>
+                    </tr>
+                    <tr *ngIf="listConfig?.length == 0 || listConfig == null"  style="color: #dc3545; text-align: center; width: 100%; position: absolute; padding: 10px;">
+                        Không có dữ liệu!
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <app-pagination (onPageChange)="onPagination($event)" [totalCount]="totalCount" [isLoading]="isLoading"
+                [currentPage]="currentPage">
+            </app-pagination> -->
+
+        </div>
+    </div>
+    <!-- End Data table -->
+
+</div>
+
+<pm-dialog [(visible)]="isShowUpdateConfigDialog" title="Cập nhật cấu hình" size="md" saveLabel="Lưu"
+    cancelLabel="Đóng" [dialogSubject]="dialogUpdateConfig">
+    <app-update-config-dialog [configInput]="configDtoSelected" (finished)="finishedToRefesh($event)">
+    </app-update-config-dialog>
+</pm-dialog>

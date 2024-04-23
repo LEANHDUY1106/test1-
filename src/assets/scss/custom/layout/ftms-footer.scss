@@ -1,0 +1,25 @@
+.ftms-body {
+	.ftms-body-content-footer {
+		.ftms-content-footer {
+			.ftms-footer {
+				width: 100%;
+				height: var(--ftms-footer-height);
+				.ftms-center {
+					height: var(--ftms-footer-height);
+					line-height: var(--ftms-footer-height);
+					padding: 0 1rem;
+				}
+				.ftms-footer-version {
+					line-height: var(--ftms-footer-height);
+				}
+				.ftms-footer-border-left {
+					line-height: var(--ftms-footer-height);
+				}
+				.ftms-contact {
+					line-height: var(--ftms-footer-height);
+					padding: 0 1rem;
+				}
+			}
+		}
+	}
+}

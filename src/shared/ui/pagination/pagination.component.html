@@ -1,0 +1,32 @@
+<div class="paginator" style="border-top: 2px solid #dadada;">
+    <div class="painator-left">
+        <div *ngIf="isFullScreen">
+            <div class="d-flex align-items-center" [ngClass]="justifyLeftClassName"
+            *ngIf="leftTemplate;else leftTemplateDefault">
+            <ng-container *ngTemplateOutlet="leftTemplate"></ng-container>
+        </div>
+        <ng-template #leftTemplateDefault>
+            <p class="mb-0" *ngIf="totalCount" style="padding-left: 20px;">
+                Dữ liệu từ dòng <span>{{from}}</span>-{{to}}/<span>{{totalCount}}</span>
+            </p>
+        </ng-template>
+        </div>
+    </div>
+    <div class="painator-center d-flex justify-content-center align-items-center">
+        <p-paginator #paginator [first]="first" appendTo="body" [style]="{'z-index': '99'}" (onPageChange)="onPageChange($event)" [rows]="rowPerPage"
+            [totalRecords]="totalCount">
+        </p-paginator>
+        <p-dropdown [(ngModel)]="rowPerPage" [options]="rowsPerPageOptions" appendTo="body"
+        (onChange)="onChangeRowPerPage($event)">
+        </p-dropdown>
+    </div>
+    <div class="paginator-center">
+        <div class="d-flex align-items-center" [ngClass]="justifyRightClassName"
+            *ngIf="rightTemplate;else rightTemplateDefault">
+            <ng-container *ngTemplateOutlet="rightTemplate"></ng-container>
+        </div>
+        <ng-template #rightTemplateDefault>
+
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="container-fluid" style="overflow-y: auto; position: relative; height: calc(100vh - 172px);"
+    [busy]="isLoading" [style.width]="isStateLeftMenu ? 'calc(100vw - 334px)' : 'calc(100vw - 132px)'">
+    <div class="container-fluid" [style.min-width]="isCheckWidth ? '900px' : '450px'">
+        <div class="row">
+            <div class="col" style="float: left;">
+                <form>
+                    <div class="card" style="min-height: 120px; padding: 20px;">
+                        <h5 class="margin">DX-Request (Digital Transformation Request)</h5>
+                        <p style="margin-bottom: 5px;">Là ứng dụng thu thập và quản lý các yêu cầu số hóa nội bộ của FTI
+                            bao gồm các chức năng sau:</p>
+                        <ol style="margin: 0px; padding-left: 30px;">
+                            <li>Yêu cầu tạo dự án mới</li>
+                            <li>Yêu cầu nâng cấp phiên bản</li>
+                            <li>Yêu cầu sửa lỗi, cải tiến, khắc phục</li>
+                            <li>Yêu cầu hỗ trợ:</li>
+                            <ul style="margin: 0px; padding-left: 30px;">
+                                <li>Hỗ trợ hệ thống</li>
+                                <li>Hỗ trợ quy trình</li>
+                                <li>Hỗ trợ download tài liệu</li>
+                            </ul>
+                        </ol>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="margin-top: 30px;" [style.min-width]="isCheckWidth ? '900px' : '450px'">
+        <div class="row">
+            <div class="col-md-6" style="float: left;">
+                <form [formGroup]="searchFormStatus">
+                    <div class="card" style="padding: 20px;">
+                        <p class="p_analytics">Thống kê theo trạng thái từ ngày {{startDateStatus}} - {{endDateStatus}}
+                            (%) </p>
+                        <div class="d-flex" style="padding: 0 15px;">
+                            <div class="d-flex" style="width: 100%;">
+                                <label for="createdDate" style="min-width: 60px; margin-top: 8px !important;">Từ
+                                    ngày:</label>
+                                <p-calendar [style]="{'width': '100%'}" dateFormat="dd/mm/yy" showButtonBar="true"
+                                    selectionMode="single" placeholder="Chọn ngày" formControlName="createdFrom"
+                                    appendTo="body" class="calendar_style">
+                                </p-calendar>
+                                <label style="margin-top: 8px !important; min-width: 65px;">Đến ngày:</label>
+                                <p-calendar [style]="{'width': '100%'}" dateFormat="dd/mm/yy" showButtonBar="true"
+                                    selectionMode="single" placeholder="Chọn ngày" formControlName="createdTo"
+                                    appendTo="body" class="calendar_style">
+                                </p-calendar>
+                                <button (click)="onSearchPieChartStatus()" class="btn btn-primary"
+                                    style="width: 220px; height: 35px; font-size: 14px;">Thống kê</button>
+                            </div>
+                        </div>
+                        <p *ngIf="checkDataStatus" style="color: #dc3545; text-align: center; margin-top: 15px;">Không
+                            có dữ liệu!</p>
+                        <p-chart *ngIf="!checkDataStatus" [height]="400" type="pie" [data]="charStatustDatas"
+                            [options]="chartOptions" style="margin-top: 15px;"></p-chart>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6" style="float: left;" [style.margin-top]="isCheckWidth ? '0px' : '30px'">
+                <form [formGroup]="searchFormType">
+                    <div class="card" style="padding: 20px;">
+                        <p class="p_analytics">Thống kê theo loại yêu cầu từ ngày {{startDateType}} - {{endDateType}}
+                            (%) </p>
+                        <div class="d-flex" style="padding: 0 15px;">
+                            <div class="d-flex" style="width: 100%; margin-right: 15px;">
+                                <label for="createdDate" style="min-width: 60px; margin-top: 8px !important;">Từ
+                                    ngày:</label>
+                                <p-calendar [style]="{'width': '100%'}" dateFormat="dd/mm/yy" showButtonBar="true"
+                                    selectionMode="single" placeholder="Chọn ngày" formControlName="createdFrom"
+                                    appendTo="body" class="calendar_style">
+                                </p-calendar>
+                                <label style="margin-top: 8px !important; min-width: 65px;">Đến ngày:</label>
+                                <p-calendar [style]="{'width': '100%'}" dateFormat="dd/mm/yy" showButtonBar="true"
+                                    selectionMode="single" placeholder="Chọn ngày" formControlName="createdTo"
+                                    appendTo="body" class="calendar_style">
+                                </p-calendar>
+                                <button (click)="onSearchPieChartType()" class="btn btn-primary"
+                                    style="width: 220px; height: 35px; font-size: 14px;">Thống kê</button>
+                            </div>
+                        </div>
+                        <p *ngIf="checkDataType" style="color: #dc3545; text-align: center; margin-top: 15px;">Không có
+                            dữ liệu!</p>
+                        <p-chart *ngIf="!checkDataType" [height]="400" type="pie" [data]="chartTypeDatas"
+                            [options]="chartOptions" style="margin-top: 15px;"></p-chart>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+<div class="content-list-request" style="height: calc(100vh - 170px);">
+    <div class="d-flex" style="margin-bottom: 20px; justify-content: space-between;">
+      <h5 style="font-weight: 700;">Danh sách công nợ</h5>
+      <div class="d-flex">
+        <button (click)="DownloadTemplate()" class="btn btn-primary" style="margin-right: 10px; height: 35px;"><i class="fas fa-file-download"></i> Download Template</button>
+        <input id="uploadFileExcel" hidden type="file" (change)="changeFile($event)" accept=".xlsx" />
+        <label for="uploadFileExcel" [hidden]="isView" class="btn btn-success" style="margin-right: 10px; height: 35px; font-size: 14px;"><i class="fas fa-file-import"></i> Import</label>
+          <button [hidden]="listInvoiceDebt?.length <= 0" (click)="exprotData()" class="btn btn-primary" style="margin-right: 10px; height: 35px;"><i class="fa-solid fa-file-export"></i> Export</button>
+        <button type="button" class="btn ms-3 btn-outline-secondary" (click)="isCollapsed = ! isCollapsed" style="margin-right: 10px; height: 35px;"
+          [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+          <i class="fas fa-filter"></i> Tìm kiếm
+        </button>
+      </div>
+    </div>
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" style="border-radius: 7px; margin-bottom: 20px;">
+      <div class="card" style="border-radius: 7px;">
+        <div class="card-body" style="border-radius: 7px;">
+          <div class="row" style="font-size: 14px !important;">
+            <div class="has-search col-lg-2 .col-12" style="margin-bottom: 8px;">
+              <span>Số hợp đồng: </span>
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control" placeholder="Nhập số hợp đồng..." maxlength="50"
+              (keydown.enter)="onSearch()"
+              [(ngModel)]="requestSearch.p_contractnumber"
+                style="font-size: 14px !important;">
+            </div>
+            <div class="has-search col-lg-2 .col-12" style="margin-bottom: 8px;">
+                <span>Tên khách hàng: </span>
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" class="form-control" placeholder="Nhập số hợp đồng..." maxlength="100"
+                (keydown.enter)="onSearch()"
+                [(ngModel)]="requestSearch.customername"
+                  style="font-size: 14px !important;">
+              </div>
+            <div class="has-search col-lg-2 .col-12" style="margin-bottom: 8px;">
+              <span>Số hóa đơn:</span>
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control" placeholder="Nhập số hóa đơn..." maxlength="50"
+              (keydown.enter)="onSearch()"
+              [(ngModel)]="requestSearch.invoicenumber"
+                style="font-size: 14px !important;">
+            </div>
+            <div class="has-search col-lg-2 .col-12" style="margin-bottom: 8px;">
+              <span>Mã số thuế:</span>
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control" placeholder="Nhập mã số thuế..." maxlength="50"
+              (keydown.enter)="onSearch()"
+              [(ngModel)]="requestSearch.taxcode"
+                style="font-size: 14px !important;">
+            </div>
+            <div class="has-search col-lg-2 .col-12" style="margin-bottom: 8px;">
+              <span>Ngày phát hành: </span>
+              <div>
+                <p-calendar [(ngModel)]="rangeDates" selectionMode="range" view="date" dateFormat="dd/mm/yy"
+                inputId="range" [style]="{'width': '100%'}" placeholder="Tìm kiếm theo ngày phát hành"></p-calendar>
+              </div>
+            </div>
+            <div class="has-search col-lg-2 .col-12" style="margin-bottom: 8px;">
+              <span>Người tiếp nhận: </span>
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control" placeholder="Nhập người tiếp nhận..."
+              (keydown.enter)="onSearch()"
+              [(ngModel)]="requestSearch.p_demaccount"
+               style="font-size: 14px !important;">
+            </div>
+            <div class="col-lg-2 .col-12" style="margin-bottom: 8px;">
+              <span class="group-text">Trạng thái:</span>
+              <ng-select [items]="availableStatuss" bindLabel="name" [multiple]="true"
+              style="font-size: 14px; height: 35px;" [placeholder]="'Tìm kiếm...'" [(ngModel)]="selectedStatuss"
+              >
+            </ng-select>
+            </div>
+            <div class="col-lg-10 col-12" style="justify-content: end; display: flex; margin: 20px 0 8px 0;">
+              <button  style="height: 35px; width: 110px;"
+              type="button" class="btn btn-primary" (click)="onSearch()"><i class="far fa-search"></i><span> Tìm kiếm</span></button>
+              <button  style="height: 35px; width: 110px; margin-left: 8px;" (click)="refeshSearch()"
+              type="button" class="btn btn-outline-secondary"><i class="fas fa-redo-alt"></i><span> Làm mới </span></button>
+            </div>
+            <!-- <div class="col-12" style="display: flex; justify-content: end;">
+              <button  style="height: 35px; width: 110px;"
+                type="button" class="btn btn-primary" (click)="onSearch()"><i class="far fa-search"></i><span> Tìm kiếm</span></button>
+                <button  style="height: 35px; width: 110px; margin-left: 8px;" (click)="refeshSearch()"
+                type="button" class="btn btn-outline-secondary"><i class="fas fa-redo-alt"></i><span> Làm mới </span></button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="request-list-content"
+      style="background-color: white; border-radius: 7px; padding-bottom: 10px; position: relative;" [busy]="isLoading">
+      <div id="tableResponse" class="request-content" style="overflow: auto;padding: 0px 10px 10px 10px; transition: 0.4s;"
+      [style.width]="isStateLeftMenu ? 'calc(100vw - 332px)' : 'calc(100vw - 128px)'"
+        [style.height]="isFullScreen ? isCollapsed ? 'calc(100vh - 315px)' : 'calc(100vh - 500px)' : isCollapsed ? 'calc(100vh - 315px)' : 'calc(100vh - 922px)'">
+        <p-table class="table" id="dataList" [value]="listInvoiceDebt" 
+        [lazy]="true"
+        [lazyLoadOnInit]="false"
+        (onLazyLoad)="lazyLoadCustom($event)"
+        [style]="{'min-width': '1550px', 'font-size': '14px', 'font-family': 'sans-serif'}">
+          <ng-template pTemplate="header" let-columns style="border-top: none !important;">
+            <tr>
+              <th style="border-top: none !important; position: sticky; top: 0;"  pSortableColumn="invoicenumber" scope="col">Số hóa đơn <p-sortIcon field="invoicenumber"></p-sortIcon></th>
+              <th style="border-top: none !important; position: sticky; top: 0;"  pSortableColumn="contractnumber" scope="col">Số hợp đồng <p-sortIcon field="contractnumber"></p-sortIcon></th>
+              <th style="border-top: none !important; position: sticky; top: 0;" pSortableColumn="taxcode" scope="col">Mã số thuế <p-sortIcon field="taxcode"></p-sortIcon></th>
+              <th style="border-top: none !important; position: sticky; top: 0;" width="17%" scope="col">Tên khách hàng</th>
+              <th style="border-top: none !important; position: sticky; top: 0;" pSortableColumn="daterelease" scope="col">Ngày phát hành<p-sortIcon field="daterelease"></p-sortIcon></th>
+              <th style="border-top: none !important; position: sticky; top: 0;" pSortableColumn="totalamount" scope="col">Tổng tiền <p-sortIcon field="totalamount"></p-sortIcon></th>
+              <th style="border-top: none !important; position: sticky; top: 0;"  pSortableColumn="totaldebt" scope="col">Nợ còn lại<p-sortIcon field="totaldebt"></p-sortIcon></th>
+              <th style="border-top: none !important; position: sticky; top: 0;" width="170px"  scope="col">Loại dịch vụ</th>
+              <th style="border-top: none !important; position: sticky; top: 0;" scope="col">Người tiếp nhận</th>
+              <th style="border-top: none !important; position: sticky; top: 0;" scope="col">Trạng thái</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item let-rowIndex="rowIndex" let-columns="columns">
+            <tr>
+              <td><a style="cursor: pointer; color: #0E69AD;" (click)="detailDebt(item.invoiceid)">{{item.invoicenumber}}</a></td>
+              <td>{{item.contractnumber}}</td>
+              <td style="word-break: break-word;">{{item.taxcode}}</td>
+              <td style="word-break: break-word;">{{item.customername}}</td>
+              <td>{{item.invoicedate | date : 'dd/MM/YYYY'}}</td>
+              <td>{{item.totalamount | currency:"VND":"symbol" }}</td>
+              <td style="color: #dc3545;">{{item?.totaldebt | currency:"VND":"symbol"}}</td>
+              <td style="word-break: break-word;">{{item.servicename}}</td>
+              <td>
+                {{item.demaccount}}
+              </td>
+              <td style="word-break: break-word;">
+                <i [style]="{'color' : item.status == 1 ? '#28A745' : '#212529'}"
+                class="fa-sharp fa-solid fa-circle">
+                </i>
+                {{item.status == 1 ? 'Đang xử lý' : 'Đã thanh toán'}}
+              </td>
+            </tr>
+            
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr
+            style="color: #dc3545; text-align: center; width: 100%; position: absolute; padding: 10px;">Không có dữ
+            liệu!
+        </tr>
+        </ng-template>
+        </p-table>
+      </div>
+      <div class="pagging" >
+        <app-pagination (onPageChange)="paginate($event)" [totalCount]="totalCount" [currentPage]="currentPage" [rowPerPage]="rowPerPage">
+        </app-pagination>
+      </div>
+    </div>
+  </div>

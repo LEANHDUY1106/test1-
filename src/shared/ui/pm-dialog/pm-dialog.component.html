@@ -1,0 +1,23 @@
+<p-dialog *ngIf="visible" [(visible)]="visible" [showHeader]="title" [modal]="true" [draggable]="false" [keepInViewport]="false" [closable]="false" [baseZIndex]="999" class="wrap-dialog" [styleClass]="size">
+    <ng-template pTemplate="header">
+        <div class="d-flex" style="justify-content: space-between; width: 100%;">
+            <h5 class="mb-0">{{title}}</h5>
+            <div *ngIf="isBtnClose" (click)="onCancel()" onkeydown="" style="cursor: pointer; padding: 0px 10px;">
+                <span class="p-dialog-header-close-icon ng-tns-c86-5 pi pi-times" style="font-size: 20px;"></span>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="content">
+        <div class="wrap-dialog-content" *ngIf="visible" [busy]="isLoading">
+            <ng-content></ng-content>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <div class="wrap-dialog-button">
+            <button *ngIf="isDisplayButtonSave" pButton pRipple class="p-button-raised p-button-primary p-button-sm mr-0" type="button" [label]="saveLabel" (click)="onSave()" icon="pi pi-check"></button>
+            <button *ngIf="isDisplayButtonCancel" pButton pRipple class="p-button-raised p-button-danger p-button-sm mr-2" type="button" [label]="cancelLabel" (click)="onCancel()" icon="pi pi-times"></button>
+        </div>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,79 @@
+variables:
+  GIT_STRATEGY: none
+  GIT_CHECKOUT: "false"
+
+stages:
+  - validate
+  - build
+  - code-analysis
+  - deploy
+
+dev-build:
+  stage: build
+  tags:
+    - devenv
+  only:
+    - dev
+  script:
+    - trigger -h http://gitlab.fpt.net -u /api/v4/projects -a rd6ApchjALgm-d7uzkCA -p fc52dafd8330b4e7fa7d8d0818a162  -o 0 -e STAGE="build" -e DOCKER_TAG=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA -t dev 4179
+dev-code-analysis:
+  stage: code-analysis
+  tags:
+    - devenv
+  only:
+    - dev
+  script:
+    - trigger -h http://gitlab.fpt.net -u /api/v4/projects -a rd6ApchjALgm-d7uzkCA -p fc52dafd8330b4e7fa7d8d0818a162  -o 1 -e STAGE="code-analysis" -e DOCKER_TAG=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA -t dev 4179
+dev-deploy:
+  stage: deploy
+  tags:
+    - devenv
+  only:
+    - dev
+  script:
+    - trigger -h http://gitlab.fpt.net -u /api/v4/projects -a rd6ApchjALgm-d7uzkCA -p fc52dafd8330b4e7fa7d8d0818a162  -e STAGE="deploy" -e DOCKER_TAG=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA -t dev 4179
+
+stag-build:
+  stage: build
+  tags:
+    - devenv
+  only:
+    - staging
+  script:
+    - trigger -h http://gitlab.fpt.net -u /api/v4/projects -a rd6ApchjALgm-d7uzkCA -p fc52dafd8330b4e7fa7d8d0818a162  -o 0 -e STAGE="build" -e DOCKER_TAG=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA -t staging 4179
+
+stag-deploy:
+  stage: deploy
+  tags:
+    - devenv
+  only:
+    - staging
+  script:
+    - trigger -h http://gitlab.fpt.net -u /api/v4/projects -a rd6ApchjALgm-d7uzkCA -p fc52dafd8330b4e7fa7d8d0818a162  -e STAGE="deploy" -e DOCKER_TAG=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA -t staging 4179
+
+prod-deployment-validate:
+  stage: validate
+  tags:
+    - devenv
+  only:
+    - tags
+  script:
+    - trigger -h http://gitlab.fpt.net -u /api/v4/projects -a rd6ApchjALgm-d7uzkCA -p fc52dafd8330b4e7fa7d8d0818a162 -o 0 -e UPSTREAM__STAGE=$CI_JOB_STAGE -e UPSTREAM__CI_JOB_NAME=$CI_JOB_NAME -e DOCKER_TAG=$CI_COMMIT_TAG -t main 4179
+
+prod-build:
+  stage: build
+  tags:
+    - devenv
+  only:
+    - tags
+  script:
+    - trigger -h http://gitlab.fpt.net -u /api/v4/projects -a rd6ApchjALgm-d7uzkCA -p fc52dafd8330b4e7fa7d8d0818a162  -o 1 -e STAGE="build" -e DOCKER_TAG=$CI_COMMIT_TAG -t main 4179
+prod-deploy:
+  stage: deploy
+  tags:
+    - devenv
+  script:
+    - trigger -h http://gitlab.fpt.net -u /api/v4/projects -a rd6ApchjALgm-d7uzkCA -p fc52dafd8330b4e7fa7d8d0818a162  -e STAGE="deploy" -e DOCKER_TAG=$CI_COMMIT_TAG -t main 4179
+  only:
+    refs:
+      - tags

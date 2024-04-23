@@ -1,0 +1,91 @@
+<div class="content-list-request" style="height: calc(100vh - 170px);">
+  <div style="margin-bottom: 20px;">
+    <h5 style="font-weight: 700;">Danh sách yêu cầu đang theo dõi</h5>
+    <div class="d-flex">
+      <div class="btn-angile" [ngClass]="{'active-angile': isSupport}" (click)="changeTap(true)" onkeydown="">
+        Yêu cầu hỗ trợ
+      </div>
+      <div class="btn-angile" [ngClass]="{'active-angile': !isSupport}" (click)="changeTap(false)" onkeydown="">
+        Yêu cầu số hóa
+      </div>
+    </div>
+  </div>
+  <div class="request-list-content"
+    style="background-color: white; border-radius: 7px; padding-bottom: 10px; position: relative;" [busy]="isLoading">
+    <div id="tableResponse" class="request-content"
+      style="overflow: auto;padding: 0px 10px 10px 10px; transition: 0.4s;"
+      [style.width]="isStateLeftMenu ? 'calc(100vw - 332px)' : 'calc(100vw - 128px)'"
+      [style.height]="isFullScreen ? isCollapsed ? 'calc(100vh - 335px)' : 'calc(100vh - 520px)' : isCollapsed ? 'calc(100vh - 310px)' : 'calc(100vh - 900px)'">
+      <p-table #table class="table" id="dataList" [value]="listRequest" [lazy]="true" [lazyLoadOnInit]="false"
+        (onLazyLoad)="lazyLoadCustom($event)"
+        [style]="{'min-width': '1390px', 'font-size': '14px', 'font-family': 'sans-serif'}">
+        <ng-template pTemplate="header" let-columns style="border-top: none !important;">
+          <tr>
+            <th style="border-top: none !important; position: sticky; top: 0;" scope="col" width="85px">Mã</th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="240px" scope="col">Tiêu đề</th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="150px" pSortableColumn="posttype"
+              scope="col">Loại yêu cầu <p-sortIcon field="posttype"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="180px"
+              pSortableColumn="projectcode" scope="col">{{isSupport ? 'Hạng mục hỗ trợ' : 'Dự án/Ứng dụng'}}
+              <p-sortIcon field="projectcode"></p-sortIcon>
+            </th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="120px"
+              pSortableColumn="departmentcode" scope="col">Đơn vị<p-sortIcon field="departmentcode"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="140px"
+              pSortableColumn="createduser" scope="col">Người tạo <p-sortIcon field="createduser"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="180px"
+              pSortableColumn="receiveraccount" scope="col">Người tiếp nhận <p-sortIcon
+                field="receiveraccount"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="170px"
+              pSortableColumn="postpriority" scope="col">Mức độ ưu tiên <p-sortIcon field="postpriority"></p-sortIcon>
+            </th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="150px" pSortableColumn="status"
+              scope="col">Trạng thái <p-sortIcon field="status"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="70px" scope="col"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex" let-columns="columns">
+          <tr>
+            <td>{{item.postid}}</td>
+            <td style="word-break: break-word;"><a (click)="detailPost(item.postid)"
+                style="cursor: pointer; color: #0E69AD;">{{item.tittle}}</a></td>
+            <td style="word-break: break-word;">{{item['typeName']}}</td>
+            <td>{{item['nameProjectCode']}}</td>
+            <td>{{item.departmentCode}}</td>
+            <td>{{item.createdUser}}</td>
+            <td>{{item?.receiverAccount ? item?.receiverAccount : ""}}</td>
+            <td>
+              {{item.priority == 1? 'Cao' : item.priority == 2 ? 'Trung bình' : 'Thấp'}}
+            </td>
+            <td style="word-break: break-word;">
+              <i [style]="{'color' : item.poststatus == 0 ? '#E5B30A' : item.poststatus == 1 ? '#0E69AD' :
+                item.poststatus == 2 ? '#28A745' : item.poststatus == 3 ? '#dc3545' : '#212529'}"
+                class="fa-sharp fa-solid fa-circle">
+              </i>
+              {{item.poststatus == 0 ? 'Chưa tiếp nhận' : item.poststatus == 1 ? 'Đã tiếp nhận' :
+              item.poststatus == 2? 'Đang xử lý' : item.poststatus == 3 ? 'Từ chối' : 'Đã đóng'}}
+            </td>
+            <td>
+              <img src="assets/images/bookmark.svg" onkeydown="" *ngIf="item.followup == 0" width="14px"
+                (click)="follow(item.postid, 1)" height="14px" title="Lưu yêu cầu vào danh sách theo dõi"
+                style="cursor: pointer;">
+              <i *ngIf="item.followup != 0" class="fas fa-bookmark" onkeydown="" (click)="follow(item.postid, 0)"
+                title="Loại bỏ yêu cầu khỏi danh sách theo dõi" style="cursor: pointer; color: #0E69AD;"></i>
+            </td>
+          </tr>
+
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr *ngIf="!isLoading"
+            style="color: #dc3545; text-align: center; width: 100%; position: absolute; padding: 10px;">Không có dữ
+            liệu!
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="pagging">
+      <app-pagination (onPageChange)="paginate($event)" [totalCount]="totalCount" [currentPage]="currentPage">
+      </app-pagination>
+    </div>
+  </div>
+</div>

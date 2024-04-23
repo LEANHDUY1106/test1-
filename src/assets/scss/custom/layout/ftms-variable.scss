@@ -1,0 +1,207 @@
+:root {
+	--ftms-header-height: 35px;
+	--ftms-header-logo-with: 210px;
+	--ftms-header-font-size: 18px;
+	--ftms-header-link-home-with: 80px;
+	--ftms-header-background-color: #f1f2f3;
+	--ftms-header-border-bottom-color: #c8ced3;
+	--ftms-header-boder-bottom-size: 1px;
+	--ftms-header-color: #0000008C;
+	--ftms-header-text-color: #0E69AD;
+	--ftms-logo-image-hight: 25px;
+	--ftms-font-side-header: 20px;
+	--ftms-header-profile-width: 180px;
+	--ftms-header-profile-box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
+	--ftms-header-profile-border-radius: 10px;
+	--ftms-header-profile-right: 16px;
+	--ftms-header-profile-right-regtangle: 125px;
+	--ftms-header-profile-top: 34px;
+	--ftms-header-profile-15: 15px;
+	--ftms-header-profile-border-top: 1px solid rgba(0, 0, 0, 0.05);
+	--ftms-header-mr-l-icon-menu: 23px;
+	--ftms-header-profile-font-size: 13px;
+	--ftms-header-profile-first-item: 25px;
+	--ftms-header-logo-mrg-bottom: 5px;
+	--ftms-header-profile-img-size: 40px;
+	--ftms-height-img-icon: 25px;
+	--ftms-body-height: var(--height-full) - var(--ftms-header-height);
+	--ftms-body-background: #f1f2f3;
+	--ftms-body-content-height: calc(100% - var(--ftms-navbar-header-height) - var(--ftms-footer-height));
+	--ftms-content-router-height: 16px;
+	--ftms-content-router-mgr-t: 22px;
+	--ftms-content-pd-l: 12px;
+	--ftms-sidebar-height: calc(var(--height-full) - var(--ftms-header-height));
+	--ftms-navbar-logo-link-with: 200px;
+	--ftms-navbar-menu: 260px;
+	--ftms-navbar-menu-hight: 44px;
+	--ftms-color-nav-menu: #213740;
+	--ftms-color-nav-active: #506169;
+	--ftms-color-nav-hover: #4c9dea;
+	--ftms-background-nav-first: #293243;
+	--ftms-color-nav-scroll: #b9b9b9;
+	--ftms-color-nav-text: #FFF;
+	--ftms-color-nav-border-item: #898989;
+	--hover-nav-item-width: 205px;
+	--ftms-navbar-mini-with: 55px;
+	--ftms-navbar-scroll: calc(100vh - 130px);
+	--ftms-navbar-sidebar-height: 360px;
+	--ftms-navbar-box-shadow-bottom: 0 0 11px rgb(0 0 0 / 13%);
+	--ftms-navbar-icon-width: 37px;
+	--ftms-navbar-left-hover: 55px;
+	--ftms-navbar-pd-l: 17px;
+	--ftms-navbar-pd-l-icon: 20.5px;
+	--ftms-navbar-border-bottom-item: 1px solid var(--ftms-color-nav-border-item);
+	--ftms-navbar-header-height: 60px;
+	--ftms-navbar-padding-text-item: 21px;
+	--ftms-navbar-font-size-logo: 37px;
+	--ftms-header-sidebar-with: 355px;
+	--ftms-header-sidebar-transition: border-color 0.167s linear, box-shadow 0.167s linear;
+	--ftms-header-sidebar-box-shadow: 0px 0px 8px 1px rgb(0 0 0 / 20%);
+	--ftms-header-sidebar-color: rgba(0,0,0,0.55);
+	--ftms-header-sidebar-height-overfollow: calc(100vh - 45px);
+	--ftms-header-sidebar-light-height: 40px;
+	--ftms-header-sidebar-padding-bottom: 32px;
+	--ftms-footer-background: #CCC;
+	--ftms-footer-height: 35px;
+	--ftms-footer-mgr-top: 8.75px;
+	--color-white: #FFFFFF;
+	--color-blu: #0E69AD;
+	--color-gray: #595959;
+	--text-size-20: 20px;
+	--text-size-18: 18px;
+	--text-size-16: 16px;
+	--color-boder-nav-item: #4b4a5e;
+	--font-size-app: 14px;
+	--color-black: #000000;
+	--height-full: 100vh;
+	--font-weight-700: 700;
+	--font-weight-550: 550;
+	--font-weight-900: 900;
+	--border-radius: 10px;
+	--z-index-10: 12;
+	--z-index-header-menu: 1000;
+	--pd-10: 20px;
+	--box-shadow-right: 0 0 15px rgba(0,0,0,0.75);
+	--scroll-color: #0000008C;
+}
+body {
+	font-size: var(--font-size-app) !important;
+}
+.ftms-nav-p-clip {
+	width: 100% !important;
+	white-space: nowrap;
+	margin: 0;
+	overflow: hidden;
+	text-overflow: clip;
+	transition: 0.5s;
+}
+.ftms-nav-menu-name {
+	text-overflow: clip;
+	white-space: nowrap;
+	direction: rtl;
+	margin: 0;
+	width: 100%;
+	overflow: hidden;
+	transition: 0.5s;
+}
+.ftms-overfolow-hidden {
+	overflow: hidden !important;
+}
+.ftms-text-blue {
+	color: var(--color-blu) !important;
+}
+.ftms-hover-cursor {
+	&:hover {
+		cursor: pointer;
+	}
+}
+.ftms-hide-cursor {
+	&:hover {
+		cursor: auto !important;
+	}
+}
+.ftms-hide-item {
+	display: none !important;
+}
+.ftms-with-100 {
+	width: 100%;
+}
+.ftms-padding-icon-callap {
+	padding: 0rem 0.2rem !important;
+}
+::-webkit-scrollbar {
+	width: 5px !important;
+	height: 5px !important;
+}
+
+::-webkit-scrollbar-track {
+	border-radius: var(--border-radius);
+}
+::-webkit-scrollbar-button {
+	height: 100%;
+}
+::-webkit-scrollbar-thumb {
+	background: var(--scroll-color);
+	border-radius: var(--border-radius);
+	&:hover {
+		background: var(--scroll-color);
+	}
+}
+.ftms-pdr-icon {
+	padding-right: 1.2rem !important;
+}
+.ftms-text-ellipsis {
+	text-overflow: ellipsis;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	padding-right: 2rem;
+	transition: 0.5s;
+}
+
+//custom calendar
+.p-inputtext{
+	padding: 0.375rem 0.75rem !important;
+	font-size: var(--font-size-app) !important;
+	width: 100% !important;
+	&:enabled:focus{
+		box-shadow: 0 0 0 1px #3779eb !important;
+		border: 1px solid #3779eb !important;
+	}
+
+}
+//custom element p Nội dung
+#content-word{
+	div {
+		p {
+			margin: 0px !important;
+		}
+	}
+}
+//custom element p thảo luận
+#content-comment{
+	p {
+		margin: 0px !important;
+		width: 100%;
+		word-wrap: break-word;
+	};
+	ul,ol {
+		li {
+			width: 100%;
+		word-wrap: break-word;
+		}
+	};
+	.table {
+		margin: 0px !important;
+		tr {
+			td {
+				padding: 6px;
+			}
+		}
+	}
+}
+@media (max-width: 530px) {
+    .ftms-header .ftms-navbar-brand-box {
+      width: auto !important;
+  }
+  }

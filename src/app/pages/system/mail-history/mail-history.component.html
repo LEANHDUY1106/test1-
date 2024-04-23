@@ -1,0 +1,123 @@
+<div style="position: relative;">
+    <!-- <app-pagetitle title="Lịch sử mail" [breadcrumbItems]="breadCrumbItems"></app-pagetitle> -->
+
+
+    <div class="mb-2" style="background-color: white; position: relative; margin-top: 20px;">
+        <div type="button" class="btn ms-2 filter" (click)="isCollapsed = ! isCollapsed"
+            style="background-color:#213740; position: absolute; top: -20px; left: 20px; color: white;"
+            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" onkeypress="">
+            <i class="fa-solid fa-plus" *ngIf="isCollapsed"></i> <i *ngIf="!isCollapsed" class="fa-solid fa-minus"></i>
+        </div>
+        <div style="padding: 20px;">
+            <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+                <form [formGroup]="searchForm">
+                    <div class="form-row">
+                        <div class="form-group col-lg-4">
+                            <label class="col-form-label" for="OpportinityCodes">Trạng thái</label>
+                            <ng-select labelForId="status1" [items]="mailStatus" bindLabel="Name" bindValue="Value"
+                                clearAllText="Clear" placeholder="Chọn trạng thái" formControlName="status"
+                                [multiple]="false">
+                            </ng-select>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label class="col-form-label" for="OpportinityCodes">Người nhận</label>
+                            <input class="form-control" type="text" placeholder="Nhập email người nhận"
+                                formControlName="to" pInputText>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label class="col-form-label" for="createdAt">Ngày gửi</label>
+                            <p-calendar [showIcon]="true" [style]="{'width': '100%'}" dateFormat="dd/mm/yy"
+                                showButtonBar="true" selectionMode="range"
+                                placeholder="Chọn ngày bắt đầu và ngày kết thúc" appendTo="body"
+                                formControlName="createdAt">
+                            </p-calendar>
+                        </div>
+                    </div>
+                    <p-divider></p-divider>
+                    <div class="my-3">
+                        <button pButton pRipple type="button" label="Tìm kiếm" icon="pi pi-search"
+                            class="p-button-raised mr-2 p-button-sm" (click)="onSearch()"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Data table -->
+    <div class="card" style="position: relative; border: none;" [busy]="isLoading">
+        <div class="card-body" style="overflow: auto; transition: 0.4s; padding: 0px;"
+            [style.width]="isStateLeftMenu ? 'calc(100vw - 334px)' : 'calc(100vw - 132px)'"
+            [style.height]="isFullScreen ? isCollapsed? 'calc(100vh - 303px)' : 'calc(100vh - 480px)' : isCollapsed? 'calc(100vh - 302px)' : 'calc(100vh - 658px)'">
+            <p-table id="dataList" class="table" [value]="mailHistories"
+                [style]="{'min-width': '1300px', 'font-size': '14px', 'font-family': 'sans-serif'}">
+                <ng-template pTemplate="header" let-columns style="border-top: none !important;">
+                    <tr>
+                        <th id="Action"
+                            style="border-top: none !important; position: sticky; top: 0; width: 100px; background-color: white; z-index: 10;">
+                            Thao tác</th>
+                        <th id="opportunityCode"
+                            style="border-top: none !important; position: sticky; top: 0; background-color: white; width: 400px; z-index: 10;">
+                            Chủ đề
+                        </th>
+                        <th id="brandname"
+                            style="border-top: none !important; position: sticky; top: 0; width: 250px; background-color: white; z-index: 10;">
+                            Người nhận
+                        </th>
+                        <th id="customer"
+                            style="border-top: none !important; position: sticky; top: 0; width: 250px; background-color: white; z-index: 10;">
+                            Người được CC
+                        </th>
+                        <th id="saleman"
+                            style="border-top: none !important; position: sticky; top: 0; width: 200px; background-color: white; z-index: 10;"
+                            pSortableColumn="createDate">
+                            Thời gian gửi
+                            <!-- <p-sortIcon field="createDate"></p-sortIcon> -->
+                        </th>
+                        <th id="approver"
+                            style="border-top: none !important; position: sticky; top: 0; width: 200px; background-color: white; z-index: 10;">
+                            Trạng thái
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex" let-columns="columns">
+                    <tr>
+                        <td style="width: 100px;">
+                            <button class=" p-button-sm  p-button-text" type="button" pButton pRipple iconPos="center"
+                                icon="pi pi-ellipsis-v" (click)="generateMenu(item);menu.toggle($event);">
+                            </button>
+                            <p-menu #menu appendTo="body" [popup]="true" [model]="menuItems"></p-menu>
+                        </td>
+                        <td style="width:400px">{{item.subject}}</td>
+                        <td style="width:250px">{{item.tos?.length ? item.tos.join(', ') : ""}}</td>
+                        <td style="width:250px">{{item.ccs?.length ? item.ccs.join(', ') : ""}}</td>
+                        <td style="width:200px">{{item.createdAt | date : 'dd/MM/YYYY' }}</td>
+                        <td style="width: 200px;">
+                            <span class="badge font-size-14" style="background-color: #2979ff2e; font-size: 12px;"
+                                [style]="{'color': item.status == 10 ? '#0E69AD' : item.status == 1 ? '#28A745' : '#dc3545'}">
+                                {{item['statusName']}}</span>
+                        </td>
+                    </tr>
+
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr style="color: #dc3545; text-align: center; width: 100%; position: absolute; padding: 10px;">
+                        Không có dữ
+                        liệu!
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </div>
+        <app-pagination (onPageChange)="onPagination($event)" [totalCount]="totalCount" [isLoading]="isLoading"
+            [currentPage]="currentPage">
+        </app-pagination>
+    </div>
+
+
+</div>
+
+<pm-dialog [(visible)]="isShowDetailDialog" title="Chi tiết mail" size="md" [isDisplayButtonCancel]="false"
+    saveLabel="Đóng" [dialogSubject]="dialogPreviewSubject">
+    <preview-dialog [id]="mailHistorySelected?.id"></preview-dialog>
+</pm-dialog>

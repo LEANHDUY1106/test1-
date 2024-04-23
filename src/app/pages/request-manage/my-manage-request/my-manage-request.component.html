@@ -1,0 +1,168 @@
+<div class="content-list-request" style="height: calc(100vh - 170px);">
+  <div class="d-flex justify-content-between" style="margin-bottom: 20px;">
+    <!-- <h5 style="font-weight: 700;">{{labelList}}</h5> -->
+    <div class="d-flex">
+      <div class="btn-angile" [ngClass]="{'active-angile': isSupport}" (click)="changeTap(true)" onkeydown="">
+        Danh sách yêu cầu hỗ trợ
+      </div>
+      <div class="btn-angile" [ngClass]="{'active-angile': !isSupport}" (click)="changeTap(false)" onkeydown="">
+        Danh sách yêu cầu số hóa
+      </div>
+    </div>
+    <div class="d-flex">
+      <button type="button" *ngIf="isSupport" class="btn btn-primary" style="margin-right: 10px; height: 35px;"
+        (click)="goToCreate()"><i class="fa-solid fa-plus" style="padding-right: 5px;"></i> <span>Tạo yêu
+          cầu</span></button>
+      <button type="button" *ngIf="(isCreate || isAdmin) && !isSupport" class="btn btn-primary"
+        style="margin-right: 10px; height: 35px;" (click)="goToCreate()"><i class="fa-solid fa-plus"
+          style="padding-right: 5px;"></i> <span>Tạo yêu cầu</span></button>
+      <button [hidden]="listRequest?.length <= 0 && !isAdmin" class="btn btn-primary" (click)="exportData()"
+        style="margin-right: 10px; height: 35px;"><i class="fa-solid fa-file-export"></i> Export</button>
+      <button type="button" class="btn ms-2 btn-outline-secondary" (click)="changeIsCallap()"
+        style="margin-right: 10px; height: 35px;" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+        <i class="fas fa-filter"></i> Tìm kiếm
+      </button>
+    </div>
+  </div>
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" style="border-radius: 7px; margin-bottom: 20px;">
+    <div class="card" style="border-radius: 7px;">
+      <div class="card-body" style="border-radius: 7px;">
+        <div class="row" style="font-size: 14px !important;">
+          <div class="has-search col-lg-3 .col-12" style="margin-bottom: 8px;">
+            <span>Tìm kếm theo tiêu đề: </span>
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="Nhập tiêu đề..." (keydown.enter)="onKeyDown($event)"
+              malgength="256" style="font-size: 14px !important;" [(ngModel)]="searchInput.tittle">
+          </div>
+          <div class="col-lg-3 .col-6" style="margin-bottom: 8px;" *ngIf="!isSupport">
+            <span class="group-text">Loại yêu cầu:</span>
+            <ng-select [items]="availableTypes" bindLabel="name" [multiple]="true" [disabled]="isSupport"
+              style="font-size: 14px; height: 35px;" [placeholder]="'Tìm kiếm...'" [(ngModel)]="selectedTypes"
+              (ngModelChange)="onTypeChange()">
+            </ng-select>
+          </div>
+          <div class="has-search col-lg-3 .col-6" style="margin-bottom: 8px;">
+            <span>{{isSupport ? 'Hạng mục hỗ trợ:' : 'Dự án/Ứng dụng:'}}</span>
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="Nhập tên dự án/ứng dụng..."
+              (keydown.enter)="onKeyDown($event)" malgength="256" style="font-size: 14px !important;"
+              [(ngModel)]="searchInput.projectcode">
+          </div>
+          <div class="has-search col-lg-3 .col-6" style="margin-bottom: 8px;">
+            <span>Đơn vị yêu cầu: </span>
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="Tìm kiếm ..." style="font-size: 14px !important;"
+              (keydown.enter)="onKeyDown($event)" [(ngModel)]="searchInput.departmentCode">
+          </div>
+          <div class="has-search col-lg-3 .col-6" style="margin-bottom: 8px;">
+            <span>Người tiếp nhận: </span>
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="Tìm kiếm ..." style="font-size: 14px !important;"
+              (change)="onChangeAssigner()" (keydown.enter)="onKeyDown($event)" [(ngModel)]="searchInput.assigner">
+          </div>
+          <div class="col-lg-3 .col-6" style="margin-bottom: 8px;">
+            <span class="group-text">Mức độ ưu tiên:</span>
+            <ng-select [items]="availablePrioritys" bindLabel="name" [multiple]="true"
+              style="font-size: 14px; height: 35px;" [placeholder]="'Tìm kiếm...'" [(ngModel)]="selectedPrioritys"
+              (ngModelChange)="onPriorityChange()">
+            </ng-select>
+          </div>
+          <div class="col-lg-3 .col-6" style="margin-bottom: 8px;">
+            <span class="group-text">Trạng thái:</span>
+            <ng-select [items]="availableStatuss" bindLabel="name" [multiple]="true"
+              style="font-size: 14px; height: 35px;" [placeholder]="'Tìm kiếm...'" [(ngModel)]="selectedStatuss"
+              (ngModelChange)="onStatusChange()">
+            </ng-select>
+          </div>
+          <div class="col-12" style="display: flex; justify-content: end;">
+            <button (click)="onKeyDown(1)" style="height: 35px; width: 150px;" type="button" class="btn btn-primary"><i
+                class="far fa-search"></i><span> Tìm kiếm</span></button>
+            <button (click)="clearSearch()" style="height: 35px; width: 150px; margin-left: 8px;" type="button"
+              class="btn btn-outline-secondary"><i class="fas fa-redo-alt"></i><span> Làm mới </span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="request-list-content"
+    style="background-color: white; border-radius: 7px; padding-bottom: 10px; position: relative;" [busy]="isLoading">
+    <div id="tableResponse" class="request-content"
+      style="overflow: auto;padding: 0px 10px 10px 10px; transition: 0.4s;"
+      [style.width]="isStateLeftMenu ? 'calc(100vw - 332px)' : 'calc(100vw - 128px)'"
+      [style.height]="isFullScreen ? isCollapsed ? 'calc(100vh - 310px)' : 'calc(100vh - 520px)' : isCollapsed ? 'calc(100vh - 310px)' : 'calc(100vh - 900px)'">
+      <p-table #table class="table" id="dataList" [value]="listRequest" [lazy]="true" [lazyLoadOnInit]="false"
+        (onLazyLoad)="lazyLoadCustom($event)"
+        [style]="{'min-width': '1390px', 'font-size': '14px', 'font-family': 'sans-serif'}">
+        <ng-template pTemplate="header" let-columns style="border-top: none !important;">
+          <tr>
+            <th style="border-top: none !important; position: sticky; top: 0;" scope="col" width="85px">Mã</th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="240px" scope="col">Tiêu đề</th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="150px" pSortableColumn="posttype"
+              scope="col">Loại yêu cầu <p-sortIcon field="posttype"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="180px"
+              pSortableColumn="projectcode" scope="col">{{isSupport ? 'Hạng mục hỗ trợ' : 'Dự án/Ứng dụng'}}
+              <p-sortIcon field="projectcode"></p-sortIcon>
+            </th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="120px"
+              pSortableColumn="departmentcode" scope="col">Đơn vị<p-sortIcon field="departmentcode"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="140px"
+              pSortableColumn="createduser" scope="col">Người tạo <p-sortIcon field="createduser"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="180px"
+              pSortableColumn="receiveraccount" scope="col">Người tiếp nhận <p-sortIcon
+                field="receiveraccount"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="170px"
+              pSortableColumn="postpriority" scope="col">Mức độ ưu tiên <p-sortIcon field="postpriority"></p-sortIcon>
+            </th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="150px" pSortableColumn="status"
+              scope="col">Trạng thái <p-sortIcon field="status"></p-sortIcon></th>
+            <th style="border-top: none !important; position: sticky; top: 0;" width="70px" scope="col"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex" let-columns="columns">
+          <tr>
+            <td>{{item.postid}}</td>
+            <td style="word-break: break-word;"><a (click)="detailPost(item.postid)"
+                style="cursor: pointer; color: #0E69AD;">{{item.tittle}}</a></td>
+            <td style="word-break: break-word;">{{item['typeName']}}</td>
+            <td>{{item['nameProjectCode']}}</td>
+            <td>{{item.departmentCode}}</td>
+            <td>{{item.createdUser}}</td>
+            <td>{{item?.receiverAccount ? item?.receiverAccount : ""}}</td>
+            <td>
+              {{item.priority == 1? 'Cao' : item.priority == 2 ? 'Trung bình' : 'Thấp'}}
+            </td>
+            <td style="word-break: break-word;">
+              <i [style]="{'color' : item.poststatus == 0 ? '#E5B30A' : item.poststatus == 1 ? '#0E69AD' :
+                item.poststatus == 2 ? '#28A745' : item.poststatus == 3 ? '#dc3545' : '#212529'}"
+                class="fa-sharp fa-solid fa-circle">
+              </i>
+              {{item.poststatus == 0 ? 'Chưa tiếp nhận' : item.poststatus == 1 ? 'Đã tiếp nhận' :
+              item.poststatus == 2? 'Đang xử lý' : item.poststatus == 3 ? 'Từ chối' : 'Đã đóng'}}
+            </td>
+            <td>
+              <img src="assets/images/bookmark.svg" onkeydown="" *ngIf="item.followup == 0" width="14px"
+                (click)="follow(item.postid, 1)" height="14px" title="Lưu yêu cầu vào danh sách theo dõi"
+                style="cursor: pointer;">
+              <i *ngIf="item.followup != 0" class="fas fa-bookmark" onkeydown="" (click)="follow(item.postid, 0)"
+                title="Loại bỏ yêu cầu khỏi danh sách theo dõi" style="cursor: pointer; color: #0E69AD;"></i>
+              <i *ngIf="isAdmin" class="fas fa-trash-alt" onkeydown="" (click)="deletePost(item.postid)"
+                title="Xóa yêu cầu" style="cursor: pointer; margin-left: 8px;"></i>
+            </td>
+          </tr>
+
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr *ngIf="!isLoading"
+            style="color: #dc3545; text-align: center; width: 100%; position: absolute; padding: 10px;">Không có dữ
+            liệu!
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="pagging">
+      <app-pagination (onPageChange)="paginate($event)" [totalCount]="totalCount" [currentPage]="currentPage"
+        [rowPerPage]="rowPerPage">
+      </app-pagination>
+    </div>
+  </div>
+</div>

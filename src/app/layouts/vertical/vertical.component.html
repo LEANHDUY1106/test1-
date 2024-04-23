@@ -1,0 +1,32 @@
+
+  <app-header></app-header>
+  <div class="ftms-body">
+    <app-sidebar></app-sidebar>
+    <div class="ftms-body-content-footer d-flex">
+      <div class="ftms-content-footer">
+          <div class="ftms-select-link d-flex">
+              <div class="ftms-app-name" id="ftms-app-name">
+                  <!-- <i class="fa-sharp fa-solid fa-gear"></i> -->
+                  <span>Request</span>
+              </div>
+              <div class="ftms-border-right" id="ftms-boder-app-name"></div>
+              <cui-breadcrumb>
+                <!-- Breadcrumb Menu-->
+                <ul style="list-style-type: none;">
+                  <li class="breadcrumb-menu d-md-down-none">
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                      <!-- <a class="btn" href="#"><i class="icon-speech"></i></a> -->
+                      <!-- <a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a> -->
+                    </div>
+                  </li>
+                  </ul>
+              </cui-breadcrumb>
+          </div>
+          <div class="ftms-content">
+            <router-outlet></router-outlet>
+          </div>
+          <app-footer></app-footer>
+      </div>
+  </div>
+  </div>
+<!-- END layout-wrapper -->

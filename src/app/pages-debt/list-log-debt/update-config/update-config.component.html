@@ -1,0 +1,39 @@
+<form id="formUpdateLog" [formGroup]="updateLogDialog" [busy]="isLoading">
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <label for="content" class="col-form-label">Hình thức tương tác</label>
+            <select class="custom-select" formControlName="interacttype" style="font-size: 14px; height: 35px;">
+                <option *ngFor="let item of listInteractValue" [value]="item.id">{{item.name}}</option>
+            </select>
+        </div>
+        <div class="col-sm-6">
+            <label for="content" class="col-form-label">Ngày tạo</label>
+            <p-calendar [style]="{'width': '100%'}" [showIcon]="true" dateFormat="dd/mm/yy" class="custom-calendar"
+                formControlName="createDate"
+                showButtonBar="true" placeholder="Chọn ngày mong muốn hoàn thành" appendTo="body">
+            </p-calendar>
+        </div>
+        <div class="col-sm-12">
+            <label for="content" class="col-form-label required">Nội dung</label>
+            <textarea class="form-control" formControlName="content" placeholder="Nhập nội dung" pInputTextarea type="text"
+                [rows]="5" [cols]="30" [ngClass]="{'pm-check': isSubmitted && getUpdateLog.content.errors}"
+                id="content"></textarea>
+            <small *ngIf="isSubmitted
+                && getUpdateLog.content.errors
+                && getUpdateLog.content.errors.required" class="p-error">
+                Dữ liệu không được để trống!
+            </small>
+            <small *ngIf="isSubmitted
+                && getUpdateLog.content.errors
+                && getUpdateLog.content.errors.maxlength" class="p-error">
+                Dữ liệu không được quá 4000 ký tự!
+            </small>
+        </div>
+        <div class="col-sm-12 d-flex justify-content-end" style="margin-top: 20px;">
+            <button class="btn btn-danger" style="font-size: 14px; height: 35px;" (click)="cancel()">Hủy</button>
+            <button class="btn btn-success" style="margin-left: 8px; font-size: 14px; height: 35px;" (click)="save()">Lưu</button>
+        </div>
+
+    </div>
+
+</form>

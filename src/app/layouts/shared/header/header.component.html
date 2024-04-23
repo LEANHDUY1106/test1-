@@ -1,0 +1,103 @@
+<div class="ftms-header">
+    <div class="ftms-nav-header">
+        <!--logo-->
+        <div class="d-flex justify-content-between" style="width: 260px;">
+            <div class="ftms-navbar-brand-box">
+                <a href="{{urlHome}}">
+                    <span class="ftms-logo-lg">
+                        <img src="assets/images/logo.svg" width="" height="" alt="logo">
+                    </span>
+                </a>
+            </div>
+            <div class="btn ftms-btn-custom" id="ftms-show-menuu-app">
+                <div class="ftms-menu-header-icon" (click)="openMenuApp()" onkeydown="">
+                    <img src="assets/images/menu.png" alt="menu" width="" height="">
+                </div>
+                <div id="ftms-menu-app" class="ftms-menu-app ftms-overfolow-hidden" style="z-index: 100000;">
+                    <div class="ftms-header-menu-app">
+                        <div class="d-flex justify-content-between ftms-header-sidebar-menu-apps">
+                            <div class="ftms-header-menu-app-name d-flex">Danh Sách Ứng Dụng</div>
+                            <div class="ftms-header-menu-app-icon ftms-hover-cursor" (click)="closeMenuApp()" onkeydown="">
+                                <i class="fa fa-times"></i>
+                            </div>
+                        </div>
+                        <div class="ftms-menu-app-overfolow">
+                            <div class="ftms-group-app" *ngFor="let group of groupApps">
+                                <div class="ftms-header-group-app">
+                                    <h5>{{group.name}}</h5>
+                                </div>
+                                <div class="ftms-list-app row">
+                                    <div class="col-6 row p-2 box-hover ftms-b-app" *ngFor="let item of group.userApps">
+                                        <div *ngIf="item.isShowImage; else showTextApp" class="col-4 pl-0 app-name">
+                                            <img height="40" role="img" width="40"
+                                            src="{{urlHome + '/assets/img/apps/' + item.imgPath}}">
+                                        </div>
+                                        <ng-template #showTextApp>
+                                            <div class="col-4 pl-0 ">
+                                              <!-- <kendo-avatar [initials]="item.shortName"></kendo-avatar> -->
+                                              <div 
+                                                class="k-avatar k-avatar-solid k-avatar-square k-avatar-primary k-avatar-md">
+                                                <span style="text-transform: uppercase; font-size: 14px !important;" class="k-avatar-text">{{item.shortName}}</span>
+                                              </div>
+                                            </div>
+                                          </ng-template>
+                                        <div class="col-8 pl-0 app-name">
+                                            <a href="{{item.host}}">{{item.displayName !=
+                                                null ? item.displayName : item.description}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex">
+            <div class="ftms-header-text" id="ftms-header-text">
+                <b>FTI Management System</b>
+            </div>
+        </div>
+        <div class="d-flex">
+            <div class="ftms-item-header">
+                <!-- <div class="ftms-home">
+                    <span class="ftms-menu-header-icon ftms-hover-cursor" style="font-size: 16px;">
+                        <i class="fa-solid fa-house"></i>
+                    </span>
+                </div>
+                <span class="px-2">|</span> -->
+                <div class="ftms-notification ftms-pd-item" style="position: relative;">
+                    <i class="fa-solid fa-bell"></i>
+            <!-- <span class="badge badge-danger badge-pill" style="font-size: 8px; position: absolute; top: 50%; left: 50%; margin-top: -14px; margin-left: 0;">5</span> -->
+                </div>
+                <!-- <div class="ftms-setting ftms-pd-item">
+                    <span class="ftms-menu-header-icon ftms-hover-cursor">
+                        <i class="fa-sharp fa-solid fa-gear"></i>
+                    </span>
+                </div> -->
+                <div class="ftms-profile-action">
+                    <div class="ftms-menu-header-icon ftms-hover-cursor ftms-profile" style="height: 35px;">
+                        <img src="assets/images/profile.png" alt="profile" width="" height=""> <a style="padding-left: 5px;" >{{user?.fullName}}</a>
+                            <!-- <span class="ftms-initials">NT</span> -->
+                    </div>
+                    <div class="ftms-menu-profile">
+                        <div class="ftms-info">
+                            Thông tin tài khoản
+                        </div>
+                        <ul>
+                            <!-- <li class="ftms-border-top">
+                                <a class="dropdown-item" style="padding: 0px 20px; border-radius: 0px;"><i
+                                    class="fa fa-user"></i>Nguyễn Duy Tín</a>
+                            </li> -->
+                            <li class="ftms-border-top">
+                                <a class="dropdown-item" style="padding: 0px 20px; border-radius: 0px;" href="javascript:void(0);" (click)="logout()">
+                                    <i class="fa fa-sign-out"></i>Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

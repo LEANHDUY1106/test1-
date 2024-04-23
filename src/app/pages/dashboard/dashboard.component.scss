@@ -1,0 +1,71 @@
+.landing h1 {
+    font-size: 56px;
+    font-weight: 300;
+    color: #1790d6;
+    /* margin: 130px 0 20px 0; */
+    text-shadow: 0 1px 2px rgb(0 0 0 / 60%);
+    text-align: center;
+}
+
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.demo {
+    width: auto;
+    margin-left: -12px;
+    margin-right: -12px !important;
+    margin-top: -23px;
+    height: calc(100vh - 131px);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.margin {
+    font-weight: bold;
+}
+
+.p_analytics {
+    font-size: 15px;
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+.progressbarstyle {
+    margin: 20px 20px 0px 20px;
+}
+
+.form-process-row {
+    display: flex;
+    margin-left: 10px;
+}
+
+.form-warranty-done {
+    margin-left: 20px;
+}
+
+.formGroup_style {
+    float: right;
+    width: 100%;
+    margin-top: 5px;
+
+}
+
+.pchart_margin {
+    margin-top: 50px;
+}
+
+.calendar_style {
+    padding: 0 10px;
+    width: 100%;
+}
+
+.form-warranty-done {
+    float: left;
+    // width: 50%;
+    // margin-top:10px;
+    // position: absolute;
+    // margin-left: 75%;
+}

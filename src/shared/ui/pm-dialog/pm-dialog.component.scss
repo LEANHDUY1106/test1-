@@ -1,0 +1,13 @@
+.wrap-dialog {
+    &-button {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        button:nth-child(1) {
+            order: 2;
+        }
+        button:nth-child(2) {
+            order: 1;
+        }
+    }
+}
